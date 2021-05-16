@@ -136,7 +136,7 @@ const cdn = new aws.cloudfront.Distribution("cdn", {
 
     // "All" is the most broad distribution, and also the most expensive.
     // "100" is the least broad, and also the least expensive.
-    priceClass: "PriceClass_100",
+    priceClass: "All",
 
     // You can customize error responses. When CloudFront receives an error from the origin (e.g. S3 or some other
     // web service) it can return a different error code, and return the response for a different resource.
