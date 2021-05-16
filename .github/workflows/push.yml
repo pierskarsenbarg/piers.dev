@@ -15,10 +15,8 @@ jobs:
         uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: 'latest'
-      - name: Change to blog blogFolder
-        run: cd blog
       - name: Build hugo site
-        run: hugo
+        run: hugo -s blog
       - uses: actions/setup-node@v1
         with:
           node-version: 14.x
