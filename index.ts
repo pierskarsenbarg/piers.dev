@@ -71,7 +71,10 @@ crawlDirectory(
     const certificate = new aws.acm.Certificate("cert", {
         domainName: config.domainName,
         subjectAlternativeNames: [`*.${config.domainName}`],
-        validationMethod: "DNS"
+        validationMethod: "DNS",
+        tags: {
+            Name: "piers.dev"
+        }
     }, {provider: eastRegion});
 
 const certValidationRecord = new aws.route53.Record("certValidationRecord",  {
