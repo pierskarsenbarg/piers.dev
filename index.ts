@@ -95,7 +95,7 @@ const cdn = new aws.cloudfront.Distribution("cdn", {
     enabled: true,
     // Alternate aliases the CloudFront distribution can be reached at, in addition to https://xxxx.cloudfront.net.
     // Required if you want to access the distribution via config.targetDomain as well.
-    //aliases: distributionAliases,
+    aliases: [config.domainName],
 
     // We only specify one origin for this distribution, the S3 content bucket.
     origins: [
@@ -172,6 +172,5 @@ const apexRecord = new aws.route53.Record("apexRecord", {
         evaluateTargetHealth: true
     }]
 });
-
 
 export const url = cdn.domainName;
