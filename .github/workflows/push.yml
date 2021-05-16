@@ -18,8 +18,6 @@ jobs:
           hugo-version: 'latest'
       - name: Build hugo site
         run: hugo -s blog
-      - name: ls
-        run: ls -l blog/public
       - uses: actions/setup-node@v1
         with:
           node-version: 15.x
