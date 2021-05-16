@@ -20,22 +20,21 @@ jobs:
         run: hugo -s blog
       - name: ls
         run: ls -l blog/public
-      
-      # - uses: actions/setup-node@v1
-      #   with:
-      #     node-version: 15.x
-      # - name: Configure AWS Credentials
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws-region: ${{ secrets.AWS_REGION }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      # - name: Install Pulumi CLI
-      #   uses: pulumi/action-install-pulumi-cli@v1
-      # - run: npm install
-      # - uses: pulumi/actions@v3
-      #   with:
-      #     command: up
-      #     stack-name: prod
-      #   env:
-      #     PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 15.x
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Install Pulumi CLI
+        uses: pulumi/action-install-pulumi-cli@v1
+      - run: npm install
+      - uses: pulumi/actions@v3
+        with:
+          command: up
+          stack-name: prod
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
