@@ -18,7 +18,7 @@ jobs:
       - name: Build hugo site
         run: hugo -s blog
       - name: ls
-        run: ls -l blog
+        run: ls -l blog/public
       
       # - uses: actions/setup-node@v1
       #   with:
