@@ -159,4 +159,16 @@ const cdn = new aws.cloudfront.Distribution("cdn", {
     },
 });
 
+const apexRecord = new aws.route53.Record("apexRecord", {
+    zoneId: hostedZone.zoneId,
+    name: config.domainName,
+    type: aws.route53.RecordTypes.A,
+    aliases: [{
+        name: cdn.domainName,
+        zoneId: cdn.hostedZoneId,
+        evaluateTargetHealth: true
+    }]
+});
+
+
 export const url = cdn.domainName;
