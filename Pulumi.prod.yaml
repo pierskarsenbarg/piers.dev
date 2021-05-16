@@ -1,3 +1,4 @@
 config:
   aws:region: eu-west-1
   piers.dev:blogFolder: blog/public
+  piers.dev:domainName: piers.dev

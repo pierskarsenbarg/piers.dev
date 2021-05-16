@@ -1,20 +1,23 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
-import * as awsx from "@pulumi/awsx";
 import * as fs from "fs";
 import * as path from "path";
 import * as mime from "mime";
+
+const stackConfig = new pulumi.Config();
+
+const config =  {
+    blogFolder: stackConfig.require("blogFolder"),
+    domainName: stackConfig.require("domainName")
+}
 
 const siteBucket = new aws.s3.Bucket("piers.dev",{
     acl: "public-read",
     website: {
         indexDocument: "index.html"
     },
-    bucket: "piers.dev"
+    bucket: config.domainName
 });
-
-const config = new pulumi.Config();
-const blogFolder = config.require("blogFolder");
 
 function crawlDirectory(dir: string, f: (_: string) => void) {
     const files = fs.readdirSync(dir);
@@ -31,12 +34,12 @@ function crawlDirectory(dir: string, f: (_: string) => void) {
 }
 
 // Sync the contents of the source directory with the S3 bucket, which will in-turn show up on the CDN.
-const webContentsRootPath = path.join(process.cwd(), blogFolder);
+const webContentsRootPath = path.join(process.cwd(), config.blogFolder);
 crawlDirectory(
     webContentsRootPath,
     (filePath: string) => {
         const relativeFilePath = filePath.replace(webContentsRootPath + "/", "");
-        const contentFile = new aws.s3.BucketObject(
+        new aws.s3.BucketObject(
             relativeFilePath,
             {
                 key: relativeFilePath,
@@ -56,10 +59,8 @@ crawlDirectory(
     });
 
     const hostedZone = new aws.route53.Zone("piersdev-hostedzone", {
-        name: "piers.dev"
+        name: config.domainName
     });
-
-    
 
     const cacheTimeout = 30;
 
@@ -68,8 +69,8 @@ crawlDirectory(
     });
 
     const certificate = new aws.acm.Certificate("cert", {
-        domainName: "piers.dev",
-        subjectAlternativeNames: ["*.piers.dev"],
+        domainName: config.domainName,
+        subjectAlternativeNames: [`*.${config.domainName}`],
         validationMethod: "DNS"
     }, {provider: eastRegion});
 
@@ -154,10 +155,8 @@ const cdn = new aws.cloudfront.Distribution("cdn", {
     loggingConfig: {
         bucket: logsBucket.bucketDomainName,
         includeCookies: false,
-        prefix: `piers.dev/`,
+        prefix: `${config.domainName}/`,
     },
 });
-
-
 
 export const url = cdn.domainName;
