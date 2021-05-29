@@ -12,7 +12,6 @@ author = "Piers Karsenbarg"
 profilePicture = "images/profile.jpg"
 customCss = ["css/syntax.css"]
 
-
 [[params.socialIcons]]
 icon = "fab fa-twitter"
 title = "twitter"
@@ -29,7 +28,6 @@ title = "linkedin"
 url = "https://www.linkedin.com/in/piers-karsenbarg"
 
 [menu]
-
 [[menu.main]]
 name = "Home"
 identifier = "home"
