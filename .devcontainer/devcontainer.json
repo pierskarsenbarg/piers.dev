@@ -4,8 +4,16 @@
 	"name": "piers.dev blog",
 	"build": {
 		"dockerfile": "Dockerfile",
-		// Update 'VARIANT' to pick an Alpine version: 3.10, 3.11, 3.12, 3.13
-		"args": { "VARIANT": "3.13" }
+		"args": {
+			// Update VARIANT to pick hugo variant.
+			// Example variants: hugo, hugo_extended
+			// Rebuild the container if it already exists to update.
+			"VARIANT": "hugo_extended",
+			// Update VERSION to pick a specific hugo version.
+			// Example versions: latest, 0.73.0, 0,71.1
+			// Rebuild the container if it already exists to update.
+			"VERSION": "latest",
+		}
 	},
 	
 	// Set *default* container specific settings.json values on container create. 
@@ -27,6 +35,7 @@
 	"forwardPorts": [
 		1313
 	],
+
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],

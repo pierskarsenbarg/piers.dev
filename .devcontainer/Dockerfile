@@ -23,4 +23,4 @@ RUN apk add --update --no-cache libc6-compat
 COPY --from=0 /usr/bin/hugo /usr/bin
 EXPOSE 1313
 WORKDIR /src
-CMD ["/usr/bin/hugo server"]
+CMD ["/usr/bin/hugo server -s blog"]
