@@ -11,6 +11,10 @@ title = "piers.dev"
 author = "Piers Karsenbarg"
 profilePicture = "images/profile.jpg"
 customCss = ["css/syntax.css"]
+singleDateFormat = "Mon, Jan 2, 2006"
+indexDateFormat = "Mon, Jan 2, 2006"
+listDateFormat = "Jan 2"
+readMore = true
 
 [[params.socialIcons]]
 icon = "fab fa-twitter"
