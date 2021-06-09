@@ -85,6 +85,14 @@ const certValidationRecord = new aws.route53.Record("certValidationRecord",  {
     ttl: 60
 }, {parent: hostedZone})
 
+const localRecord = new aws.route53.Record("localRecord", {
+    name: "local",
+    zoneId: hostedZone.zoneId,
+    type: aws.route53.RecordType.A,
+    ttl: 60,
+    records: ["127.0.0.1"]
+});
+
 
 const certValidation = new aws.acm.CertificateValidation("certValidation", {
     certificateArn: certificate.arn,
