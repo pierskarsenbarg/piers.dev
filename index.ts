@@ -120,6 +120,14 @@ const mailValidationMxA = new aws.route53.Record("mailValidationMxA", {
     zoneId: hostedZone.zoneId
 });
 
+const mailGunCname = new aws.route53.Record("mailGunCname", {
+    type: aws.route53.RecordType.CNAME,
+    ttl: 60,
+    name: "email.frommail.piersonthe.net",
+    records: ["eu.mailgun.org"],
+    zoneId: hostedZone.zoneId
+})
+
 const certValidation = new aws.acm.CertificateValidation("certValidation", {
     certificateArn: certificate.arn,
     validationRecordFqdns: [certValidationRecord.fqdn]
