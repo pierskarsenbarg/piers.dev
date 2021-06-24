@@ -113,8 +113,8 @@ const mailValidationMxA = new aws.route53.Record("mailValidationMxA", {
     type: aws.route53.RecordType.MX,
     name: "from.piers.dev",
     records: [
-        "mxa.eu.mailgun.org",
-        "mxb.eu.mailgun.org"
+        "10 mxa.eu.mailgun.org",
+        "10 mxb.eu.mailgun.org"
     ],
     ttl: 60,
     zoneId: hostedZone.zoneId
