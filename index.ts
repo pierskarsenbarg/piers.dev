@@ -109,6 +109,17 @@ const mailValidationTxtSecure = new aws.route53.Record("mailValidationTxtSecure"
     name: "s1._domainkey.from.piers.dev"
 });
 
+const mailValidationMxA = new aws.route53.Record("mailValidationMxA", {
+    type: aws.route53.RecordType.MX,
+    name: "from.piers.dev",
+    records: [
+        "mxa.eu.mailgun.org",
+        "mxb.eu.mailgun.org"
+    ],
+    ttl: 60,
+    zoneId: hostedZone.zoneId
+});
+
 const certValidation = new aws.acm.CertificateValidation("certValidation", {
     certificateArn: certificate.arn,
     validationRecordFqdns: [certValidationRecord.fqdn]
