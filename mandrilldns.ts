@@ -10,7 +10,7 @@ export class MandrillDns extends ComponentResource {
         super("x:dns:mailgundns", name, opts);
 
 
-        const dkimvalidationtxt = new aws.route53.Record("dkimvalidationtxt", {
+        const dkimvalidationtxt = new aws.route53.Record("mandrilldkimvalidationtxt", {
             type: aws.route53.RecordType.TXT,
             zoneId: args.zoneId,
             ttl: 60,
@@ -18,7 +18,7 @@ export class MandrillDns extends ComponentResource {
             name: "mandrill._domainkey"
         });
 
-        const mailValidationTxt = new aws.route53.Record("mailValidationTxt", {
+        const mailValidationTxt = new aws.route53.Record("mandrillmailValidationTxt", {
             type: aws.route53.RecordType.TXT,
             zoneId: args.zoneId,
             ttl: 60,
