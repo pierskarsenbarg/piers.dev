@@ -192,8 +192,8 @@ const sendgrid = new SendGridDns("sendgriddns", {
     zoneId: hostedZone.zoneId
 })
 
-const mandrill = new MandrillDns("mandrilldns", {
-    zoneId: hostedZone.zoneId
-})
+// const mandrill = new MandrillDns("mandrilldns", {
+//     zoneId: hostedZone.zoneId
+// })
 
 export const url = cdn.domainName;
