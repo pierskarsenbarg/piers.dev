@@ -3,6 +3,7 @@ import * as aws from "@pulumi/aws";
 import * as fs from "fs";
 import * as path from "path";
 import * as mime from "mime";
+import {MailgunDns, MailgunDnsArgs} from "./mailgundns";
 
 const stackConfig = new pulumi.Config();
 
@@ -93,41 +94,6 @@ const localRecord = new aws.route53.Record("localRecord", {
     records: ["127.0.0.1"]
 });
 
-const mailValidationTxt = new aws.route53.Record("mailValidationTxt", {
-    type: aws.route53.RecordType.TXT,
-    zoneId: hostedZone.zoneId,
-    ttl: 60,
-    records: ["v=spf1 include:mailgun.org ~all"],
-    name: "from.piers.dev"
-});
-
-const mailValidationTxtSecure = new aws.route53.Record("mailValidationTxtSecure", {
-    type: aws.route53.RecordType.TXT,
-    zoneId: hostedZone.zoneId,
-    ttl: 60,
-    records: ["k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDJoW5s2j+hogRtSiPdtmi/y+QmFLU7eVUv6p+AL92jEHZKn8yFYiaGLzmgbYGwowV6E9uQxX2StsQ0WJGGTMvpsFyEJyQ4Jxcmja6Q0BAItVGbEPBGl0Oq0sEklsUxVzFH5tUluiK+FA1xxvaiVUFow8z+6vjvOBIaFZl+JQW9bwIDAQAB"],
-    name: "s1._domainkey.from.piers.dev"
-});
-
-const mailValidationMxA = new aws.route53.Record("mailValidationMxA", {
-    type: aws.route53.RecordType.MX,
-    name: "from.piers.dev",
-    records: [
-        "10 mxa.eu.mailgun.org",
-        "10 mxb.eu.mailgun.org"
-    ],
-    ttl: 60,
-    zoneId: hostedZone.zoneId
-});
-
-const mailGunCname = new aws.route53.Record("mailGunCname", {
-    type: aws.route53.RecordType.CNAME,
-    ttl: 60,
-    name: "email.from.piers.dev",
-    records: ["eu.mailgun.org"],
-    zoneId: hostedZone.zoneId
-})
-
 const certValidation = new aws.acm.CertificateValidation("certValidation", {
     certificateArn: certificate.arn,
     validationRecordFqdns: [certValidationRecord.fqdn]
@@ -213,6 +179,10 @@ const apexRecord = new aws.route53.Record("apexRecord", {
         zoneId: cdn.hostedZoneId,
         evaluateTargetHealth: true
     }]
+});
+
+const mailgundns = new MailgunDns("mailgundns", {
+    zoneId: hostedZone.zoneId
 });
 
 export const url = cdn.domainName;
