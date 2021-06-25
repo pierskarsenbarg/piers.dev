@@ -4,6 +4,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as mime from "mime";
 import {MailgunDns, MailgunDnsArgs} from "./mailgundns";
+import {SendGridDns, SendGridDnsArgs} from "./sendgridDns";
 
 const stackConfig = new pulumi.Config();
 
@@ -184,5 +185,9 @@ const apexRecord = new aws.route53.Record("apexRecord", {
 const mailgundns = new MailgunDns("mailgundns", {
     zoneId: hostedZone.zoneId
 });
+
+const sendgrid = new SendGridDns("sendgriddns", {
+    zoneId: hostedZone.zoneId
+})
 
 export const url = cdn.domainName;
