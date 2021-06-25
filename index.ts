@@ -3,10 +3,6 @@ import * as aws from "@pulumi/aws";
 import * as fs from "fs";
 import * as path from "path";
 import * as mime from "mime";
-import {MailgunDns} from "./mailgundns";
-import {SendGridDns} from "./sendgridDns";
-import {MandrillDns} from "./mandrilldns";
-
 
 const stackConfig = new pulumi.Config();
 
