@@ -184,16 +184,4 @@ const apexRecord = new aws.route53.Record("apexRecord", {
     }]
 });
 
-const mailgundns = new MailgunDns("mailgundns", {
-    zoneId: hostedZone.zoneId
-});
-
-const sendgrid = new SendGridDns("sendgriddns", {
-    zoneId: hostedZone.zoneId
-})
-
-const mandrill = new MandrillDns("mandrilldns", {
-    zoneId: hostedZone.zoneId
-})
-
 export const url = cdn.domainName;
