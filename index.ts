@@ -4,6 +4,8 @@ import * as fs from "fs";
 import * as path from "path";
 import * as mime from "mime";
 
+import {MailgunDns, MailgunDnsArgs} from "./mailgun";
+
 const stackConfig = new pulumi.Config();
 
 const config =  {
@@ -178,6 +180,10 @@ const apexRecord = new aws.route53.Record("apexRecord", {
         zoneId: cdn.hostedZoneId,
         evaluateTargetHealth: true
     }]
+});
+
+const mailgunrecords = new MailgunDns("mailgundns", {
+    zoneId: hostedZone.zoneId
 });
 
 export const url = cdn.domainName;
