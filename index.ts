@@ -1,8 +1,8 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws";
-import * as fs from "fs";
 import * as path from "path";
 import * as mime from "mime";
+import * as utils from "./utils";
 
 const stackConfig = new pulumi.Config();
 
@@ -19,23 +19,23 @@ const siteBucket = new aws.s3.Bucket("piers.dev", {
     bucket: config.domainName
 });
 
-function crawlDirectory(dir: string, f: (_: string) => void) {
-    const files = fs.readdirSync(dir);
-    for (const file of files) {
-        const filePath = `${dir}/${file}`;
-        const stat = fs.statSync(filePath);
-        if (stat.isDirectory()) {
-            crawlDirectory(filePath, f);
-        }
-        if (stat.isFile()) {
-            f(filePath);
-        }
-    }
-}
+// function crawlDirectory(dir: string, f: (_: string) => void) {
+//     const files = fs.readdirSync(dir);
+//     for (const file of files) {
+//         const filePath = `${dir}/${file}`;
+//         const stat = fs.statSync(filePath);
+//         if (stat.isDirectory()) {
+//             crawlDirectory(filePath, f);
+//         }
+//         if (stat.isFile()) {
+//             f(filePath);
+//         }
+//     }
+// }
 
 // Sync the contents of the source directory with the S3 bucket, which will in-turn show up on the CDN.
 const webContentsRootPath = path.join(process.cwd(), config.blogFolder);
-crawlDirectory(
+utils.crawlDirectory(
     webContentsRootPath,
     (filePath: string) => {
         const relativeFilePath = filePath.replace(webContentsRootPath + "/", "");
