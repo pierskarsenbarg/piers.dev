@@ -19,20 +19,6 @@ const siteBucket = new aws.s3.Bucket("piers.dev", {
     bucket: config.domainName
 });
 
-// function crawlDirectory(dir: string, f: (_: string) => void) {
-//     const files = fs.readdirSync(dir);
-//     for (const file of files) {
-//         const filePath = `${dir}/${file}`;
-//         const stat = fs.statSync(filePath);
-//         if (stat.isDirectory()) {
-//             crawlDirectory(filePath, f);
-//         }
-//         if (stat.isFile()) {
-//             f(filePath);
-//         }
-//     }
-// }
-
 // Sync the contents of the source directory with the S3 bucket, which will in-turn show up on the CDN.
 const webContentsRootPath = path.join(process.cwd(), config.blogFolder);
 utils.crawlDirectory(
@@ -53,10 +39,9 @@ utils.crawlDirectory(
             });
     });
 
-const logsBucket = new aws.s3.Bucket("piersdevrequestLogs",
-    {
-        acl: "private",
-    });
+const logsBucket = new aws.s3.Bucket("piersdevrequestLogs", {
+    acl: "private",
+});
 
 const hostedZone = new aws.route53.Zone("piersdev-hostedzone", {
     name: config.domainName
@@ -179,5 +164,3 @@ const apexRecord = new aws.route53.Record("apexRecord", {
         evaluateTargetHealth: true
     }]
 });
-
-export const url = cdn.domainName;
