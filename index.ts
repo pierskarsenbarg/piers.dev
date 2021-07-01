@@ -4,16 +4,14 @@ import * as fs from "fs";
 import * as path from "path";
 import * as mime from "mime";
 
-import {MailgunDns, MailgunDnsArgs} from "./mailgun";
-
 const stackConfig = new pulumi.Config();
 
-const config =  {
+const config = {
     blogFolder: stackConfig.require("blogFolder"),
     domainName: stackConfig.require("domainName")
 }
 
-const siteBucket = new aws.s3.Bucket("piers.dev",{
+const siteBucket = new aws.s3.Bucket("piers.dev", {
     acl: "public-read",
     website: {
         indexDocument: "index.html"
@@ -55,37 +53,37 @@ crawlDirectory(
             });
     });
 
-    const logsBucket = new aws.s3.Bucket("piersdevrequestLogs",
+const logsBucket = new aws.s3.Bucket("piersdevrequestLogs",
     {
         acl: "private",
     });
 
-    const hostedZone = new aws.route53.Zone("piersdev-hostedzone", {
-        name: config.domainName
-    });
+const hostedZone = new aws.route53.Zone("piersdev-hostedzone", {
+    name: config.domainName
+});
 
-    const cacheTimeout = 30;
+const cacheTimeout = 30;
 
-    const eastRegion = new aws.Provider("east", {
-        region: "us-east-1", // Per AWS, ACM certificate must be in the us-east-1 region.
-    });
+const eastRegion = new aws.Provider("east", {
+    region: "us-east-1", // Per AWS, ACM certificate must be in the us-east-1 region.
+});
 
-    const certificate = new aws.acm.Certificate("cert", {
-        domainName: config.domainName,
-        subjectAlternativeNames: [`*.${config.domainName}`],
-        validationMethod: "DNS",
-        tags: {
-            Name: "piers.dev"
-        }
-    }, {provider: eastRegion});
+const certificate = new aws.acm.Certificate("cert", {
+    domainName: config.domainName,
+    subjectAlternativeNames: [`*.${config.domainName}`],
+    validationMethod: "DNS",
+    tags: {
+        Name: "piers.dev"
+    }
+}, { provider: eastRegion });
 
-const certValidationRecord = new aws.route53.Record("certValidationRecord",  {
+const certValidationRecord = new aws.route53.Record("certValidationRecord", {
     name: certificate.domainValidationOptions[0].resourceRecordName,
     zoneId: hostedZone.zoneId,
     type: certificate.domainValidationOptions[0].resourceRecordType,
     records: [certificate.domainValidationOptions[0].resourceRecordValue],
     ttl: 60
-}, {parent: hostedZone})
+}, { parent: hostedZone })
 
 const localRecord = new aws.route53.Record("localRecord", {
     name: "local",
@@ -98,7 +96,7 @@ const localRecord = new aws.route53.Record("localRecord", {
 const certValidation = new aws.acm.CertificateValidation("certValidation", {
     certificateArn: certificate.arn,
     validationRecordFqdns: [certValidationRecord.fqdn]
-}, {provider: eastRegion});
+}, { provider: eastRegion });
 
 const cdn = new aws.cloudfront.Distribution("cdn", {
     enabled: true,
@@ -180,10 +178,6 @@ const apexRecord = new aws.route53.Record("apexRecord", {
         zoneId: cdn.hostedZoneId,
         evaluateTargetHealth: true
     }]
-});
-
-const mailgunrecords = new MailgunDns("mailgundns", {
-    zoneId: hostedZone.zoneId
 });
 
 export const url = cdn.domainName;
