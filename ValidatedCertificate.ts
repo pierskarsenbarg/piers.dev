@@ -7,7 +7,7 @@ export interface ValidatedCertificateArgs {
 }
 
 export class ValidatedCertificate extends pulumi.ComponentResource {
-    public readonly CertificateArn: pulumi.Output<string>;
+    public readonly certificateArn: pulumi.Output<string>;
     constructor(name: string, args: ValidatedCertificateArgs, opts?: pulumi.ComponentResource) {
         super("x:aws:validatedcertificate", name, opts);
 
@@ -32,15 +32,15 @@ export class ValidatedCertificate extends pulumi.ComponentResource {
             ttl: 60
         }, { parent: this });
 
-        const certValidation = new aws.acm.CertificateValidation("certValidation", {
+        new aws.acm.CertificateValidation("certValidation", {
             certificateArn: certificate.arn,
             validationRecordFqdns: [certValidationRecord.fqdn]
         }, { provider: eastRegion, parent: this });
 
-        this.CertificateArn = certificate.arn;
+        this.certificateArn = certificate.arn;
 
         this.registerOutputs({
-            CertificateArn: this.CertificateArn
+            certificateArn: this.certificateArn
         });
     }
 }
