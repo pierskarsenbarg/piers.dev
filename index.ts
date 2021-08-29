@@ -142,7 +142,7 @@ const cdn = new aws.cloudfront.Distribution("cdn", {
     },
 
     viewerCertificate: {
-        acmCertificateArn: validatedCertificate.certificateArn,  // Per AWS, ACM certificate must be in the us-east-1 region.
+        acmCertificateArn: certificate.arn,  // Per AWS, ACM certificate must be in the us-east-1 region.
         sslSupportMethod: "sni-only",
     },
 
