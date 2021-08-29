@@ -51,36 +51,36 @@ const hostedZone = new aws.route53.Zone("piersdev-hostedzone", {
 
 const cacheTimeout = 30;
 
-const validatedCertificate = new ValidatedCertificate("piers.dev-validated-cert", {
-    domainName: "piers.dev",
-    hostedZoneId: hostedZone.zoneId
-});
-
-// const eastRegion = new aws.Provider("east", {
-//     region: "us-east-1", // Per AWS, ACM certificate must be in the us-east-1 region.
+// const validatedCertificate = new ValidatedCertificate("piers.dev-validated-cert", {
+//     domainName: "piers.dev",
+//     hostedZoneId: hostedZone.zoneId
 // });
 
-// const certificate = new aws.acm.Certificate("cert", {
-//     domainName: config.domainName,
-//     subjectAlternativeNames: [`*.${config.domainName}`],
-//     validationMethod: "DNS",
-//     tags: {
-//         Name: "piers.dev"
-//     }
-// }, { provider: eastRegion });
+const eastRegion = new aws.Provider("east", {
+    region: "us-east-1", // Per AWS, ACM certificate must be in the us-east-1 region.
+});
 
-// const certValidationRecord = new aws.route53.Record("certValidationRecord", {
-//     name: certificate.domainValidationOptions[0].resourceRecordName,
-//     zoneId: hostedZone.zoneId,
-//     type: certificate.domainValidationOptions[0].resourceRecordType,
-//     records: [certificate.domainValidationOptions[0].resourceRecordValue],
-//     ttl: 60
-// }, { parent: hostedZone })
+const certificate = new aws.acm.Certificate("cert", {
+    domainName: config.domainName,
+    subjectAlternativeNames: [`*.${config.domainName}`],
+    validationMethod: "DNS",
+    tags: {
+        Name: "piers.dev"
+    }
+}, { provider: eastRegion });
 
-// const certValidation = new aws.acm.CertificateValidation("certValidation", {
-//     certificateArn: certificate.arn,
-//     validationRecordFqdns: [certValidationRecord.fqdn]
-// }, { provider: eastRegion });
+const certValidationRecord = new aws.route53.Record("certValidationRecord", {
+    name: certificate.domainValidationOptions[0].resourceRecordName,
+    zoneId: hostedZone.zoneId,
+    type: certificate.domainValidationOptions[0].resourceRecordType,
+    records: [certificate.domainValidationOptions[0].resourceRecordValue],
+    ttl: 60
+}, { parent: hostedZone })
+
+const certValidation = new aws.acm.CertificateValidation("certValidation", {
+    certificateArn: certificate.arn,
+    validationRecordFqdns: [certValidationRecord.fqdn]
+}, { provider: eastRegion });
 
 const cdn = new aws.cloudfront.Distribution("cdn", {
     enabled: true,
