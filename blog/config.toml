@@ -15,6 +15,7 @@ singleDateFormat = "Mon, Jan 2, 2006"
 indexDateFormat = "Mon, Jan 2, 2006"
 listDateFormat = "Jan 2"
 readMore = true
+gtagId = G-20FVZ7LJZX
 
 [[params.socialIcons]]
 icon = "fab fa-twitter"
