@@ -2,4 +2,4 @@ config:
   aws:region: eu-west-1
   piers.dev:blogFolder: blog/public
   piers.dev:domainName: piers.dev
-  piers.dev:googleVerification: google-site-verification=HGyfOf75co1jbrOPy_kw7uOz2Ur_e5rxN4EJ5D5yP-c
+  piers.dev:googleVerification: google-site-verification=I_28Kd46ufSZMdkDQ1NCHILSw_m-Bbq3lw8O1Itg4vA
