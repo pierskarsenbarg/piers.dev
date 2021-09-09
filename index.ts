@@ -4,6 +4,8 @@ import * as path from "path";
 import * as mime from "mime";
 import * as utils from "./utils";
 
+import { ValidatedCertificate } from "./ValidatedCertificate";
+
 const stackConfig = new pulumi.Config();
 
 const config = {
@@ -49,6 +51,11 @@ const hostedZone = new aws.route53.Zone("piersdev-hostedzone", {
 
 const cacheTimeout = 30;
 
+// const validatedCertificate = new ValidatedCertificate("piers.dev-validated-cert", {
+//     domainName: "piers.dev",
+//     hostedZoneId: hostedZone.zoneId
+// });
+
 const eastRegion = new aws.Provider("east", {
     region: "us-east-1", // Per AWS, ACM certificate must be in the us-east-1 region.
 });
@@ -69,14 +76,6 @@ const certValidationRecord = new aws.route53.Record("certValidationRecord", {
     records: [certificate.domainValidationOptions[0].resourceRecordValue],
     ttl: 60
 }, { parent: hostedZone })
-
-const localRecord = new aws.route53.Record("localRecord", {
-    name: "local",
-    zoneId: hostedZone.zoneId,
-    type: aws.route53.RecordType.A,
-    ttl: 60,
-    records: ["127.0.0.1"]
-});
 
 const certValidation = new aws.acm.CertificateValidation("certValidation", {
     certificateArn: certificate.arn,
