@@ -10,7 +10,8 @@ const stackConfig = new pulumi.Config();
 
 const config = {
     blogFolder: stackConfig.require("blogFolder"),
-    domainName: stackConfig.require("domainName")
+    domainName: stackConfig.require("domainName"),
+    googleVerification: stackConfig.require("googleVerification")
 }
 
 const siteBucket = new aws.s3.Bucket("piers.dev", {
@@ -162,4 +163,12 @@ const apexRecord = new aws.route53.Record("apexRecord", {
         zoneId: cdn.hostedZoneId,
         evaluateTargetHealth: true
     }]
+});
+
+const googleVerificationRecord = new aws.route53.Record("googleVerification", {
+    zoneId: hostedZone.zoneId,
+    name: config.domainName,
+    type: aws.route53.RecordType.TXT,
+    records: [config.googleVerification],
+    ttl: 3600
 });
