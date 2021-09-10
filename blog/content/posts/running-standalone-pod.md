@@ -1,7 +1,7 @@
 ---
 title: "Running a Standalone Pod in Kubernetes"
 date: 2021-09-10T11:16:46+01:00
-draft: true
+draft: false
 tags:
   - kubernetes
 ---
