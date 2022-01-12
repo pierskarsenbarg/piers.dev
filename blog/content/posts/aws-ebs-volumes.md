@@ -4,6 +4,7 @@ date: 2021-11-30T10:40:00Z
 tags: 
   - aws
   - ec2
+  - pulumi
 ---
 
 One of the things that Pulumi makes it really easy to do is to set up AWS EC2 instances. What sometimes comes up in issues or support requests is a question about why that instance keeps being refreshed and it's often down to the way AWS names the EBS devices. 
