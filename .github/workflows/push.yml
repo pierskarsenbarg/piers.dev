@@ -34,7 +34,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Install Pulumi CLI
         uses: pulumi/setup-pulumi@v2
-      - run: npm install
+      - run: npm ci
       - uses: pulumi/actions@v3
         with:
           command: up
