@@ -11,7 +11,8 @@ const stackConfig = new pulumi.Config();
 const config = {
     blogFolder: stackConfig.require("blogFolder"),
     domainName: stackConfig.require("domainName"),
-    googleVerification: stackConfig.require("googleVerification")
+    googleVerification: stackConfig.require("googleVerification"),
+    bskyVerification: stackConfig.require("bskyVerification"),
 }
 
 const siteBucket = new aws.s3.Bucket("piers.dev", {
@@ -171,4 +172,12 @@ const googleVerificationRecord = new aws.route53.Record("googleVerification", {
     type: aws.route53.RecordType.TXT,
     records: [config.googleVerification],
     ttl: 3600
+});
+
+const bskyVerificationRecord = new aws.route53.Record("bskyVerification", {
+    zoneId: hostedZone.zoneId,
+    name: "_atproto.",
+    type: aws.route53.RecordType.TXT,
+    records: [config.bskyVerification],
+    ttl: 300
 });

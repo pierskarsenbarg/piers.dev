@@ -1,5 +1,7 @@
 config:
   aws:region: eu-west-1
   piers.dev:blogFolder: blog/public
+  piers.dev:bskyVerification:
+    secure: AAABADNkmikIKNLmUzsixDF7GO1PgrK9NwVLHWZcc9jOHgoqJOy5jwNRg1tXEn3u6JC9GgNBdvUGkAgpRf6ckDc6Ic8=
   piers.dev:domainName: piers.dev
   piers.dev:googleVerification: google-site-verification=I_28Kd46ufSZMdkDQ1NCHILSw_m-Bbq3lw8O1Itg4vA
